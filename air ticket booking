@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyHigh Pro | Aero-Blur Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        * { font-family: 'Inter', sans-serif; transition: all 0.4s ease; }
+
+        body { background: #020617; overflow: hidden; margin: 0; height: 100vh; }
+
+        /* --- DYNAMIC BLUR BACKGROUND --- */
+        .blur-container {
+            position: fixed; inset: 0; z-index: -1;
+            background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
+        }
+
+        /* Moving RGB Blur Orbs */
+        .blur-orb {
+            position: absolute; border-radius: 50%; filter: blur(120px);
+            opacity: 0.4; animation: moveBlur 15s infinite alternate ease-in-out;
+        }
+        .orb-1 { width: 500px; height: 500px; background: #3b82f6; top: -10%; left: -5%; }
+        .orb-2 { width: 450px; height: 450px; background: #ef4444; bottom: -5%; right: -5%; animation-delay: -5s; }
+        .orb-3 { width: 350px; height: 350px; background: #22c55e; top: 20%; right: 10%; animation-delay: -10s; }
+
+        @keyframes moveBlur {
+            from { transform: translate(0, 0) scale(1); }
+            to { transform: translate(100px, 50px) scale(1.2); }
+        }
+
+        /* --- FLYING AIRPLANES IN BACKGROUND --- */
+        .bg-airplane {
+            position: absolute; color: rgba(255, 255, 255, 0.05);
+            font-size: 80px; z-index: 0; pointer-events: none;
+            animation: flyAcross 25s linear infinite;
+        }
+
+        @keyframes flyAcross {
+            from { transform: translate(-200px, 100vh) rotate(-30deg); }
+            to { transform: translate(120vw, -200px) rotate(-30deg); }
+        }
+
+        /* --- LOGIN GLASS CARD WITH INTENSE BLUR --- */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(40px); /* Zyada blur effect */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+        }
+
+        .btn-confirm {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.4);
+        }
+
+        #takeoff-layer {
+            position: fixed; inset: 0; background: #020617; z-index: 500;
+            display: none; align-items: center; justify-content: center;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center">
+
+    <div class="blur-container">
+        <div class="blur-orb orb-1"></div>
+        <div class="blur-orb orb-2"></div>
+        <div class="blur-orb orb-3"></div>
+    </div>
+
+    <i class="fas fa-plane bg-airplane" style="animation-duration: 30s; opacity: 0.03;"></i>
+    <i class="fas fa-plane bg-airplane" style="animation-duration: 45s; animation-delay: -15s; font-size: 40px; opacity: 0.02;"></i>
+
+    <div id="takeoff-layer">
+        <i class="fas fa-plane-departure text-white text-8xl animate-bounce"></i>
+    </div>
+
+    <div id="login-screen" class="w-full max-w-md p-6 z-10">
+        <div class="glass-card p-10 rounded-[40px] text-center">
+            <div class="w-20 h-20 bg-indigo-500/20 rounded-3xl flex items-center justify-center mx-auto mb-6 border border-white/10">
+                <i class="fas fa-plane-arrival text-3xl text-white"></i>
+            </div>
+            <h1 class="text-3xl font-black text-white tracking-tight">SKYHIGH</h1>
+            <p class="text-slate-400 text-xs uppercase tracking-widest mb-10">Admin Control Center</p>
+            
+            <div class="space-y-4">
+                <input type="text" id="userInp" placeholder="Admin Username" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl text-white outline-none focus:border-indigo-500">
+                <input type="password" id="passInp" placeholder="Access Password" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl text-white outline-none focus:border-indigo-500">
+                <button onclick="handleLogin()" class="btn-confirm w-full py-4 rounded-2xl text-white font-bold uppercase tracking-widest">
+                    Initialize System
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-app" class="hidden fixed inset-0 bg-white flex overflow-hidden">
+        <aside class="w-72 bg-slate-900 text-white p-6">
+            <div class="text-2xl font-black mb-10 italic">SKYHIGH</div>
+            <nav class="space-y-2">
+                <div class="p-4 bg-indigo-600 rounded-xl cursor-pointer">Book Ticket</div>
+                <div class="p-4 hover:bg-white/5 rounded-xl cursor-pointer">Reservations</div>
+            </nav>
+        </aside>
+
+        <main class="flex-1 bg-slate-50 overflow-y-auto">
+            <header class="p-6 bg-white border-b flex justify-between items-center">
+                <h2 class="text-2xl font-bold">Book Ticket</h2>
+                <div class="flex items-center gap-3 bg-slate-100 p-2 rounded-2xl border">
+                    <img src="https://ui-avatars.com/api/?name=Admin" class="w-10 h-10 rounded-xl">
+                    <div class="text-xs">
+                        <p class="font-bold">Admin this website</p>
+                        <p class="text-indigo-600">STATUS: ONLINE</p>
+                    </div>
+                </div>
+            </header>
+
+            <div class="p-10">
+                <div class="bg-white p-10 rounded-[3rem] shadow-xl">
+                    <h3 class="text-2xl font-bold mb-8">Passenger Registration</h3>
+                    <div class="grid grid-cols-2 gap-6">
+                        <input type="text" placeholder="Full Name" class="p-4 bg-slate-100 rounded-xl border-none outline-none">
+                        <select class="p-4 bg-slate-100 rounded-xl border-none outline-none"><option>Where to?</option></select>
+                        <select class="p-4 bg-slate-100 rounded-xl border-none outline-none"><option>Select Timing</option></select>
+                        <select class="p-4 bg-slate-100 rounded-xl border-none outline-none"><option>Select Class</option></select>
+                    </div>
+                    <button class="mt-8 px-10 py-4 btn-confirm text-white font-bold rounded-2xl">CONFIRM BOOKING</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function handleLogin() {
+            const user = document.getElementById('userInp').value;
+            const pass = document.getElementById('passInp').value;
+
+            if(user === "admin" && pass === "12345") {
+                document.getElementById('takeoff-layer').style.display = 'flex';
+                document.getElementById('login-screen').style.display = 'none';
+                
+                setTimeout(() => {
+                    document.getElementById('takeoff-layer').style.display = 'none';
+                    document.getElementById('main-app').classList.remove('hidden');
+                }, 2000);
+            } else {
+                alert("Invalid Credentials!");
+            }
+        }
+    </script>
+</body>
+</html>
